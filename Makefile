@@ -2,15 +2,12 @@
 #!/bin/sh
 include ./make.inc
 CFLAGS += -I$(HDF5_ROOT)/include 
-all: read_cache prepare_dataset 
+LIBS +=  -L$(HDF5_ROOT)/lib -lhdf5 
 
-
-
-LIBS += ./debug.o -L$(HDF5_ROOT)/lib -lhdf5 
 all: prepare_dataset read_cache 
 
 prepare_dataset: prepare_dataset.o debug.o 
-	$(CXX) $(CXXFLAGS) -o $@ prepare_dataset.o debug.o -L$(HDF5_ROOT)/lib -lhdf5 
+	$(CXX) $(CXXFLAGS) -o $@ prepare_dataset.o debug.o ${LIBS}
 
 read_cache: read_cache.o debug.o utils.o
 	$(CXX) $(CXXFLAGS) -o $@ read_cache.o debug.o utils.o $(LIBS) 

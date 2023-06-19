@@ -87,35 +87,6 @@ void set_hyperslab_from_samples(int *samples, int nsample, hid_t *fspace) {
   Get the indices of the samples that have been selected from filespace, and
   check whether it is contiguous or not.
 */
-void get_samples_from_filespace(hid_t fspace, BATCH *samples, bool *contig) {
-  hssize_t numblocks = H5Sget_select_hyper_nblocks(fspace);
-  hsize_t gdims[MAXDIM];
-  int ndims = H5Sget_simple_extent_dims(fspace, gdims, NULL);
-  hsize_t *block_buf =
-      (hsize_t *)malloc(numblocks * 2 * ndims * sizeof(hsize_t));
-  H5Sget_select_hyper_blocklist(fspace, 0, numblocks, block_buf);
-  samples->size = 0;
-  int i, j;
-  for (i = 0; i < numblocks; i++) {
-    int start = block_buf[2 * i * ndims];
-    int end = block_buf[2 * i * ndims + ndims];
-    for (j = start; j < end + 1; j++) {
-      samples->size = samples->size + 1;
-    }
-  }
-  samples->list = (int *)malloc(sizeof(int) * samples->size);
-  int n = 0;
-  for (i = 0; i < numblocks; i++) {
-    int start = block_buf[2 * i * ndims];
-    int end = block_buf[2 * i * ndims + ndims];
-    for (j = start; j < end + 1; j++) {
-      samples->list[n] = j;
-      n = n + 1;
-    }
-  }
-  *contig = H5Sis_regular_hyperslab(fspace);
-  free(block_buf);
-}
 
 /*
    Create directory recursively by providing a path.

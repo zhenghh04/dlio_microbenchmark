@@ -13,8 +13,6 @@
  */
 #ifndef UTILS_H_
 #define UTILS_H_
-#include "H5LS.h"
-#include "hdf5.h"
 #include "mpi.h"
 #include <limits.h>
 #include <string.h>
@@ -37,8 +35,6 @@ extern "C" {
 // set hyperslab selection given the sample list
 void set_hyperslab_from_samples(int *samples, int nsample, hid_t *fspace);
 // get the list of the samples from the filespace
-void get_samples_from_filespace(hid_t fspace, BATCH *samples, bool *contiguous);
-// get the buffer size from the mspace and type ids.
 hsize_t get_buf_size(hid_t mspace, hid_t tid);
 void parallel_dist(size_t dim, int nproc, int rank, size_t *ldim,
                    size_t *start);
