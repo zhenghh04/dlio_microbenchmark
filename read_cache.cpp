@@ -285,7 +285,6 @@ int main(int argc, char **argv) {
         cout << endl;
       }
     }
-    tt.start_clock("REMAP");
     if (io_node() == rank) {
       printf("  %6.2f (sec) - %6.2f (imgs/sec) - %6.2f (MB/sec)\n", t1,
              nproc * num_batches * batch_size / t1,
